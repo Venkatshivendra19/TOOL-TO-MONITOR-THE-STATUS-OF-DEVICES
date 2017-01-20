@@ -1,0 +1,83 @@
+
+<?php
+include './search.php';
+
+// Create connection
+$conn = mysqli_connect($host, $username, $password,$database,$port);
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+
+$query="select * FROM UPTIMES";
+$result=mysqli_query($conn,$query);
+
+
+?>
+
+
+
+<html>
+<head>
+<title>ASSIGNMENTS</title>
+
+</head>
+<body>
+<h3 style='text-align: center;'>ASSIGNMENT-4</h3>
+<table  table align="center" style='text-align: center;' width="60%" border="1" cellpadding="1" cellspacing="1" >
+<tr>
+<th>IP</th>
+<th>PORT</th>
+<th>COMMUNITY</th>
+<th>STATUS</th>
+
+</tr>
+
+<form action="2.php" method="POST">
+<?php
+if(mysqli_num_rows($result)>0)
+{
+while($row=mysqli_fetch_assoc($result)){
+
+echo"<tr>";
+echo"<td><button type='submit'formaction=2.php?id=".$row['id'].">".$row['IP']."</button></td><td>".$row['PORT']."</td><td>".$row['COMMUNITY']."</td>";
+
+if($row['reqlost']>0&&$row['reqlost']<15){
+$p=$row['reqlost'];
+$sh=dechex(16776958-($p*257));
+
+echo"<td bgcolor='$sh'>". "</td>";
+}
+else if($row['reqlost']>14&&$row['reqlost']<=30)
+{
+$p=$row['reqlost']-14;
+$sh=dechex(16773103-($p*4112));
+echo"<td bgcolor='$sh'>". "</td>";
+}
+else if($row['reqlost']>30){
+echo"<td bgcolor='#FF0000'>". "</td>";
+}
+
+else{
+echo"<td bgcolor='#FFFFFF'>". "</td>";
+}
+echo"</tr>";
+}
+}else{echo"0 results";
+}
+?>
+</form>
+</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
